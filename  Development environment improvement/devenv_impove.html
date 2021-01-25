@@ -1,0 +1,626 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title> Development environment improvement</title><link href='https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; --title-bar-height:20px; }
+.mac-os-11 { --title-bar-height:28px; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; tab-size: 4; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+.typora-export .task-list-item input { pointer-events: none; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; image-orientation: from-image; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-diagram-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  .typora-export #write { break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  .is-mac table { break-inside: avoid; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.8; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.html-for-mac .inline-math-svg .MathJax_SVG { vertical-align: 0.2px; }
+.md-math-block .MathJax_SVG_Display { text-align: center; margin: 0px; position: relative; text-indent: 0px; max-width: none; max-height: none; min-height: 0px; min-width: 100%; width: auto; overflow-y: hidden; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: var(--monospace); }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: 400; line-height: normal; zoom: 90%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; overflow-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none 0s ease 0s; }
+.MathJax_SVG_Display svg { vertical-align: middle !important; margin-bottom: 0px !important; margin-top: 0px !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+mark .md-meta { color: rgb(0, 0, 0); opacity: 0.3 !important; }
+@media print {
+  .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
+}
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-require-zoom-fix foreignobject { font-size: var(--mermaid-font-zoom); }
+
+
+.CodeMirror { height: auto; }
+.CodeMirror.cm-s-inner { background: inherit; }
+.CodeMirror-scroll { overflow: auto hidden; z-index: 3; }
+.CodeMirror-gutter-filler, .CodeMirror-scrollbar-filler { background-color: rgb(255, 255, 255); }
+.CodeMirror-gutters { border-right: 1px solid rgb(221, 221, 221); background: inherit; white-space: nowrap; }
+.CodeMirror-linenumber { padding: 0px 3px 0px 5px; text-align: right; color: rgb(153, 153, 153); }
+.cm-s-inner .cm-keyword { color: rgb(119, 0, 136); }
+.cm-s-inner .cm-atom, .cm-s-inner.cm-atom { color: rgb(34, 17, 153); }
+.cm-s-inner .cm-number { color: rgb(17, 102, 68); }
+.cm-s-inner .cm-def { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-variable { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-variable-2 { color: rgb(0, 85, 170); }
+.cm-s-inner .cm-variable-3 { color: rgb(0, 136, 85); }
+.cm-s-inner .cm-string { color: rgb(170, 17, 17); }
+.cm-s-inner .cm-property { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-operator { color: rgb(152, 26, 26); }
+.cm-s-inner .cm-comment, .cm-s-inner.cm-comment { color: rgb(170, 85, 0); }
+.cm-s-inner .cm-string-2 { color: rgb(255, 85, 0); }
+.cm-s-inner .cm-meta { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-qualifier { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-builtin { color: rgb(51, 0, 170); }
+.cm-s-inner .cm-bracket { color: rgb(153, 153, 119); }
+.cm-s-inner .cm-tag { color: rgb(17, 119, 0); }
+.cm-s-inner .cm-attribute { color: rgb(0, 0, 204); }
+.cm-s-inner .cm-header, .cm-s-inner.cm-header { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-quote, .cm-s-inner.cm-quote { color: rgb(0, 153, 0); }
+.cm-s-inner .cm-hr, .cm-s-inner.cm-hr { color: rgb(153, 153, 153); }
+.cm-s-inner .cm-link, .cm-s-inner.cm-link { color: rgb(0, 0, 204); }
+.cm-negative { color: rgb(221, 68, 68); }
+.cm-positive { color: rgb(34, 153, 34); }
+.cm-header, .cm-strong { font-weight: 700; }
+.cm-del { text-decoration: line-through; }
+.cm-em { font-style: italic; }
+.cm-link { text-decoration: underline; }
+.cm-error { color: red; }
+.cm-invalidchar { color: red; }
+.cm-constant { color: rgb(38, 139, 210); }
+.cm-defined { color: rgb(181, 137, 0); }
+div.CodeMirror span.CodeMirror-matchingbracket { color: rgb(0, 255, 0); }
+div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(255, 34, 34); }
+.cm-s-inner .CodeMirror-activeline-background { background: inherit; }
+.CodeMirror { position: relative; overflow: hidden; }
+.CodeMirror-scroll { height: 100%; outline: 0px; position: relative; box-sizing: content-box; background: inherit; }
+.CodeMirror-sizer { position: relative; }
+.CodeMirror-gutter-filler, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-vscrollbar { position: absolute; z-index: 6; display: none; }
+.CodeMirror-vscrollbar { right: 0px; top: 0px; overflow: hidden; }
+.CodeMirror-hscrollbar { bottom: 0px; left: 0px; overflow: hidden; }
+.CodeMirror-scrollbar-filler { right: 0px; bottom: 0px; }
+.CodeMirror-gutter-filler { left: 0px; bottom: 0px; }
+.CodeMirror-gutters { position: absolute; left: 0px; top: 0px; padding-bottom: 30px; z-index: 3; }
+.CodeMirror-gutter { white-space: normal; height: 100%; box-sizing: content-box; padding-bottom: 30px; margin-bottom: -32px; display: inline-block; }
+.CodeMirror-gutter-wrapper { position: absolute; z-index: 4; background: 0px 0px !important; border: none !important; }
+.CodeMirror-gutter-background { position: absolute; top: 0px; bottom: 0px; z-index: 4; }
+.CodeMirror-gutter-elt { position: absolute; cursor: default; z-index: 4; }
+.CodeMirror-lines { cursor: text; }
+.CodeMirror pre { border-radius: 0px; border-width: 0px; background: 0px 0px; font-family: inherit; font-size: inherit; margin: 0px; white-space: pre; overflow-wrap: normal; color: inherit; z-index: 2; position: relative; overflow: visible; }
+.CodeMirror-wrap pre { overflow-wrap: break-word; white-space: pre-wrap; word-break: normal; }
+.CodeMirror-code pre { border-right: 30px solid transparent; width: fit-content; }
+.CodeMirror-wrap .CodeMirror-code pre { border-right: none; width: auto; }
+.CodeMirror-linebackground { position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; z-index: 0; }
+.CodeMirror-linewidget { position: relative; z-index: 2; overflow: auto; }
+.CodeMirror-wrap .CodeMirror-scroll { overflow-x: hidden; }
+.CodeMirror-measure { position: absolute; width: 100%; height: 0px; overflow: hidden; visibility: hidden; }
+.CodeMirror-measure pre { position: static; }
+.CodeMirror div.CodeMirror-cursor { position: absolute; visibility: hidden; border-right: none; width: 0px; }
+.CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+.CodeMirror-focused div.CodeMirror-cursor { visibility: inherit; }
+.cm-searching { background: rgba(255, 255, 0, 0.4); }
+@media print {
+  .CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+}
+
+
+:root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+}
+
+@include-when-export url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+/* open-sans-regular - latin-ext_latin */
+  /* open-sans-italic - latin-ext_latin */
+    /* open-sans-700 - latin-ext_latin */
+    /* open-sans-700italic - latin-ext_latin */
+  html {
+    font-size: 16px;
+}
+
+body {
+    font-family: "Open Sans","Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+}
+
+#write {
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
+}
+
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1024px;
+	}
+}
+
+@media only screen and (min-width: 1800px) {
+	#write {
+		max-width: 1200px;
+	}
+}
+
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
+}
+
+a {
+    color: #4183C4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+
+/*@media print {
+    .typora-export h1,
+    .typora-export h2 {
+        border-bottom: none;
+        padding-bottom: initial;
+    }
+
+    .typora-export h1::after,
+    .typora-export h2::after {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-top: -96px;
+        border-top: 1px solid #eee;
+    }
+}*/
+
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border-top: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n),
+thead {
+    background-color: #f8f8f8;
+}
+table th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    margin: 0;
+    padding: 6px 13px;
+}
+table td {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 6px 13px;
+}
+table th:first-child,
+table td:first-child {
+    margin-top: 0;
+}
+table th:last-child,
+table td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-lines {
+    padding-left: 4px;
+}
+
+.code-tooltip {
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
+}
+
+.md-fences {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+
+.md-task-list-item > input {
+  margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
+    pre {
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+.html-for-mac .context-menu {
+    --item-hover-bg-color: #E6F0FE;
+}
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+}
+
+.ty-preferences .window-content {
+    background-color: #fafafa;
+}
+
+.ty-preferences .nav-group-item.active {
+    color: white;
+    background: #999;
+}
+
+
+</style>
+</head>
+<body class='typora-export os-windows'>
+<div id='write'  class=''><h3><a name="들어가는-말" class="md-header-anchor"></a><span>들어가는 말</span></h3><p><span>제가 개발에 사용하고 있는 툴이 있다면, vim, ctags 정도인 것 같습니다. 두 가지만으로도 훌륭한 개발 도구가 될 수 있습니다. 하지만 언제 부족함을 느끼죠. 그리고 아주 익숙해져 버린 습관에서 벗어나는 것은 쉬운 일이 아닙니다. 호기심에 IDE(Integrated Development Environment)를 다운 받아서 깔아보고 나서, 너무 많은 메뉴와 알 수 없는 기능들이 너무 많아서 다시 vim으로 돌아오곤 했습니다.</span></p><p><img src="./pictures/complicateIde.jpg" referrerpolicy="no-referrer" alt="복잡한 IDE 화면"></p><p><span>코딩에 있어서는 vim만으로 충분할 수 있습니다. 그러나 vim은 백업 그리고 버전/소스 관리에 있어서는 전혀 상관없는 툴이지요. 그 동안의 버전/소스 관리는 완벽히 수동으로, 제 손가락으로만 수행을 했던 겁니다.</span></p><p><img src="./pictures/construct.jpg" referrerpolicy="no-referrer" alt="삽질"></p><p><span>이제 그만 다른 개발자들이 사용하는 개발환경에 관심을 가져도 되지 않을까 생각을 합니다. 세상에 많은 개발자들이 1991년 만들어진 vim에만 머물러 있지 않으니까요.</span></p><p><span>참고로 이 문서도 git, vscode를 이용해서 markdown 파일로 만들어 보았습니다.</span></p><h1><a name="trend" class="md-header-anchor"></a><span>Trend</span></h1><p><span>단연 Git이 가장 대표적인 버전 관리 시스템입니다. 구글에서 &#39;version Control system&#39;을 검색하시면, 언제나 상위에 랭크되어 있는 Git을 볼 수 있습니다. 많은 오픈 소스 프로젝트가 Github에서 개발되고 있습니다. 5GC API들을 정리해둔 5GC_APIs도 Github에 있고, 찾아보면 5G core and EPC을 C로 구현하고 있는 프로젝트(open5gs)도 있습니다.</span></p><p><img src="./pictures/clip_image001.png" referrerpolicy="no-referrer" alt="VCS 랭킹"></p><p><span>IDE 랭킹은 다음과 같습니다. 친근한 vim를 랭킹에서 찾아볼 수는 있습니다. 단 점유율 0.95%로 아주 초라한 share입니다.</span></p><p><img src="./pictures/clip_image002.png" referrerpolicy="no-referrer" alt="IDE 랭킹"></p><p><span>특징으로는 2014년부터 Visual Studio Code가 급성장하고 있습니다.</span></p><p><img src="./pictures/clip_image003.png" referrerpolicy="no-referrer" alt="vscode 급성장"></p><p><span>아무래도 개발환경을 새롭게 시도해 보고자 한다면, 위에 있는 목록에서 고르는 것이 trend에 맞겠다 싶습니다. 저 많은 툴들을 일일히 다 경험해 볼 수는 없으니까요.</span></p><p><span>저는 git, visual studio code를 선택했습니다. git repository를 노트북에 만들기 위해서는 리눅스가 필요해서, 노트북에 WSL2(windows subsystem for Linux)을 구성하고 우분투 리눅스도 설치했습니다.</span></p><h1><a name="git" class="md-header-anchor"></a><span>Git</span></h1><p><span>우선 Git에 대한 간략한 소개를 하자면, Git은 리눅스를 만든 토발즈가 커널 개발을 …어쩌구 저쩌구… 역사는 필요 없으니 생략하구요. Git의 가장 큰 키워드는 세 가지입니다.</span></p><h5><a name="버전-관리-백업-협업" class="md-header-anchor"></a><span>버전 관리, 백업, 협업</span></h5><p><span>commit을 통해서 모든 경사항들을 기록하고, branch를 따로 떼어내서 긴 버전 업그레이드를 수행할 수 있습니다. tag을 하면 원하는 내용을 표시해서 넣을 수도 있습니다. 대체로 tag는 patch와 같은 걸 기록하고, branch는 규모가 좀 되는 업그레이드에 사용합니다. diff를 지원하기 때문에 commit 간 차이를 확인할 수도 있습니다.</span></p><p><span>백업은 원격 repository를 만들어서, 또는 github, gitlab과 같은 무료 git 웹서버들을 이용하면 안전하게 백업을 해둘 수 있습니다.</span></p><p><span>협업은 각자의 repository(development repository)에서 개발된 내용을 중심이 되는 repository(bare-repository)로 push하면, 중심이 되는 repository가 중첩되지 않는 영역은 알아서 통합을 해주고, 중첩되는 부분에 대해서는 conflict를 발생시켜서 개발자들이 검토할 수 있게 도와줍니다.</span></p><h5><a name="우리의-버전-관리-백업-협업" class="md-header-anchor"></a><span>우리의 버전 관리, 백업, 협업</span></h5><p><span>현재 우리가 작업하는 방식은 이렇습니다. 버전 관리는 이전 폴더를 *_r101라는 이름으로 복사를 해두는 것이죠. 백업은 주기적으로 다른 서버에 소스를 통째로 압축을 해서 옮겨놓는 일입니다. 협업은 &#39;누가 include를 고쳤는가? 누가 libsrc를 고쳤는가?&#39; 이렇게 같이 일하는 사람들에게 묻는 것이죠.</span></p><p><img src="./pictures/whodoyoudothat.jpg" referrerpolicy="no-referrer" alt="who do you do that?"></p><p><span>이런 작업들을 더 체계적이고 편리하게 할 수 있다면, 코드를 한번 더 검증할 수 있는 시간이 마련되고, 고객사 니즈를 한번 더 생각할 수 있는 시간이 생기고, 퇴근 시간이 더 빨라지지 않을까요? 버전 관리, 백업만이라도 크게 신경 쓰지 않아도 된다면, 큰 도움이 될 겁니다.</span></p><p><span>Git에 대한 개념과 사용방법은 인터넷에서 잘 정리된 곳들이 많으니, 이를 참고하시기 바랍니다. 저는 생활코딩의 &quot;지옥에서 온 Git&quot;으로 대략적인 개념을 잡았습니다. 일반인 대상 강의이기 때문에 쉽고 부담 없이 시청할 수 있습니다. 2배속으로 돌려봐도 될 정도입니다.</span></p><ul><li><span>입구 수업 : </span><a href='https://opentutorials.org/module/3733'><span>https://opentutorials.org/module/3733</span></a></li><li><span>본격 수업 : </span><a href='https://opentutorials.org/course/2708'><span>https://opentutorials.org/course/2708</span></a></li></ul><p><span>덧붙여서 Github에 대해서 언급하고 싶습니다. Git은 버전 관리 툴이고, Github는 Git을 바탕한 웹서비스입니다. Git repository 인터넷 호스팅 서비스와 WEB 인터페이스를 제공하고, 편리한 추가 기능 등을 제공해 줍니다. 아주 후려서 설명하자면, 나의 소스들을 인터넷에 안전하게, 무료로 백업(2021.1.기준)해주는 서비스입니다.</span></p><h1><a name="visual-studio-code" class="md-header-anchor"></a><span>Visual Studio Code</span></h1><p><span>Visual Studio라는 이름은 익숙합니다. 가장 강력한 개발도구로 알려져 있지만, 그 규모가 저에게는 좀 부담스럽습니다. 주로 vim을 써왔으니까요. 용량의 차이, 기능의 차이, 구동 시간의 차이가 아주 큽니다. 다윗과 골리앗, 아니 골리앗과 다윈의 신발 한 짝인 셈입니다.</span></p><p><span>하지만 Visual Studio Code는 Visual Studio와 결이 많이 다릅니다. Vscode(visual studio code)는 IDE이기보다 text 편집기에 가깝습니다. 하지만 그렇다고 해서 IDE가 가지고 있는 편리함을 못 누리는 것이 아닙니다. 휴대폰에 앱을 깔듯이 extention을 설치하면, 다양한 기능을 사용할 수 있습니다.</span></p><p><img src="./pictures/vscodescreen.png" referrerpolicy="no-referrer" alt="vscode 화면"></p><p><span>무엇보다도 vim extension을 설치하면, 고향 같은 vim 환경을 그대로 사용할 수 있습니다. ctags를 돌리지 않아도, tags 파일 구성을 고민할 필요도 없이, ‘Ctrl + ]’ 단축키로 define에 접근할 수도 있습니다. 또한 remote-development extension을 사용하면 노트북의 vscode에서 원격서버를 바로 접속해서 소스를 확인하고 수정할 수도 있습니다. (단, 제약사항으로 Redhat 7 이상에서 사용 가능, redhat6라도 GLIBC 2.17 이상을 수동 설치하면 사용 가능)</span></p><h5><a name="vscode-주요-장점" class="md-header-anchor"></a><span>vscode 주요 장점</span></h5><ul><li><span>vim 환경을 그대로 사용 가능</span></li><li><span>원격서버/WSL/Docker container에 있는 소스도, 마치 로컬 PC에서 작업하는 것과 같이 사용 가능(remote-development extension 설치)</span></li></ul><h5><a name="참조-링크" class="md-header-anchor"></a><span>참조 링크</span></h5><ul><li><a href='https://code.visualstudio.com/'><span>vscode 설치 방법</span></a></li><li><a href='https://technote.kr/320'><span>remote-development extentions 설치 방법</span></a></li></ul><h1><a name="wsl2" class="md-header-anchor"></a><span>WSL2</span></h1><p><span>Windows Subsystem for Linux은 윈도우 10에서 리눅스를 사용할 수 있는 도구입니다. 예전에는 리눅스를 사용하기 위해서 Virsual Host을 실행하고, 리눅스를 부팅해서 사용해야 했습니다. 이제는 WSL 덕분에 윈도우에서 언제나 터미널만 열면 리눅스로 접속해서 사용할 수 있습니다.</span></p><p><span>윈도우에서도 Git을 사용할 수는 있지만 사내 소스들이 리눅스 기반 소스이기 때문에, 노트북에 소스들을 저장하고 관리하기 위해서는 리눅스를 로컬에 설치해야 합니다.</span></p><p><span>아래 링크를 참조하셔서 WSL2를 설치하시면 됩니다.</span></p><ul><li><a href='https://www.44bits.io/ko/post/wsl2-install-and-basic-usage'><span>WSL2 설치 방법</span></a></li></ul><h1><a name="현재-나의-개발-프로세스" class="md-header-anchor"></a><span>현재 나의 개발 프로세스</span></h1><p><span>노트북에서 xshell을 이용해서 소스가 있는 서버에 접속하고 vim으로 소스를 편집하고 컴파일러로 빌드를 합니다. 테스트 서버에서 ftp, rcp, scp를 사용하여 원격의 바이너리를 복사해 옵니다. 그리고 테스트를 하고, 결과를 확인합니다.</span></p><p><span>새로운 개발환경을 구성할 때, 고려할 사항으로는 소스&amp;빌드 서버가 인터넷을 연결할 수 있는지 없는지입니다. Gibhub로 접근할 수 있는지에 따라서 구성이 달라지기 때문입니다.</span></p><ul><li><span>소스 서버 인터넷 가능</span></li><li><span>소스 서버 인터넷 불가</span></li></ul><h1><a name="git-vscode-wsl2-개발환경" class="md-header-anchor"></a><span>Git, Vscode, WSL2 개발환경</span></h1><h3><a name="소스-서버가-인터넷-불가능한-경우" class="md-header-anchor"></a><span>소스 서버가 인터넷 불가능한 경우</span></h3><p><span>대부분이 이와 유사한 방식으로 작업을 하실 겁니다. 소스&amp;빌드 서버와 테스트 서버가 보통은 사내 서버나 고객사 테스트 베드에 있기 때문입니다.</span></p><p><img src="./pictures/devenv.png" referrerpolicy="no-referrer" alt="소스 서버 인터넷 불가능한 상황의 개발환경"></p><p><span>우선 노트북에는 vscode를 설치하고 WSL2 리눅스를 구성합니다. WSL2 리눅스에는 소스가 있고 Git으로 관리하죠. 주로 소스를 열람하고 편집하는 repository는 WSL2 리눅스에서 입니다. vscode의 remote-develoment extension으로 원격 연결해서 작업하면 됩니다. 마치 로컬에서 작업하는 것처럼 만들어 주죠.</span></p><p><span>소스 편집이 완료되면 Git을 이용(git push)하여, WSL2 리눅스에서 소스&amp;빌드 서버로 변경 내용을 전달합니다. 그 이후에 빌드, 바이너리 릴리즈, 테스트는 전과 동일한 방식으로 작업합니다. 빌드를 하면서 소스&amp;빌드 서버에서 소스를 바로 수정하고 싶은 경우도 있습니다. 그럴 때에는 소스&amp;빌드 서버에서 작업하고 완료한 뒤에, WSL2 리눅스에서 변경사항을 소스&amp;빌드 서버로부터 받아오면(Pull) 됩니다.</span></p><p><span>어느 정도 작업이 완료가 되고 나면, WSL2 리눅스에서 Github로 전제 변경사항을 전달(Push)합니다.</span></p><h3><a name="소스-서버가-인터넷이-가능한-경우" class="md-header-anchor"></a><span>소스 서버가 인터넷이 가능한 경우</span></h3><p><span>vscode의 remote-develoment extension으로 소스&amp;빌드 서버에 접속을 해서 편집 및 개발 작업을 합니다. 단, 앞서 언급한 바와 같이 소스&amp;빌드 서버가 GLIBC 2.17 이상을 사용할 수 있어야 합니다. 소스&amp;빌드 서버와 Github는 바로 연결해서 Push/Pull을 사용하면 됩니다.</span></p><p><img src="./pictures/devenv_srcserve_internet_ok.png" referrerpolicy="no-referrer" alt="소스 서버가 인터넷이 가능한 경우"></p><h3><a name="생각해-볼-수-있는-환경" class="md-header-anchor"></a><span>생각해 볼 수 있는 환경</span></h3><p><span>노트북 WSL2 리눅스를 소스&amp;빌드 서버로 사용하는 방법도 있습니다. 단순한 구조로 사용할 수 있어서 편리합니다. 하지만 많은 제약 조건이 있습니다. WSL2 리눅스가 Test server와 호환이 가능해야 합니다.</span></p><p><img src="./pictures/ideal_devenv.png" referrerpolicy="no-referrer" alt="생각해 볼 수 있는 환경"></p><p><span>현재 WSL2로 설치가 가능한 리눅스 목록은 다음과 같습니다. 각 개발하는 OS 플랫폼에 따라서 호환 가능성은 각자 판단하시기 바랍니다.</span></p><ul><li><span>무료 : Alpine WSL, Ubuntu, Debian, Kali Linux, Raft WSL, SUSE Linux</span></li><li><span>유료 : Fedora Remix For WSL, CentOS</span></li></ul><h1><a name="실습" class="md-header-anchor"></a><span>실습</span></h1><p><span>말로만 설명하기 보다는 간단히 실습할 수 있도록 구성을 하였습니다.</span></p><h3><a name="사전작업" class="md-header-anchor"></a><span>사전작업</span></h3><ul><li><span>github 미리 가입</span></li><li><span>노트북 wsl2 Ubuntu 설치</span></li><li><span>vscode 설치</span></li><li><span>앞선 git 강의를 시청</span></li></ul><h3><a name="가상-프로젝트-내용" class="md-header-anchor"></a><span>가상 프로젝트 내용</span></h3><ul><li><span>프로젝트 이름 : hello_ariel</span></li><li><span>개발사항 : &quot;hello, ariel.&quot; 출력</span></li><li><span>보완사항#1(소스&amp;빌드 서버에서 편집) : &quot;nice to you, too.&quot; 출력</span></li></ul><h3><a name="1-github-repository-만들기" class="md-header-anchor"></a><span>1. Github repository 만들기</span></h3><p><span>Github에서 새로운 repository를 생성합니다. Public을 선택하면 모든 사용자에게 공개되기 때문에 Private을 선택하고, README 파일과 .gitignore 파일을 기본으로 생성하기로 합니다. .gitignore 파일은 git이 추적하지 않을 파일들의 목록입니다. C는 *.o 파일을 추적할 필요가 없기 때문에, 이런 파일들이 목록에 들어갑니다. Github에서는 언어를 선택하면 기본적인 .gitignore 목록을 만들어 줍니다. 여기에서는 C언어를 선택해서 .gitignore 파일을 생성하였습니다.</span></p><p><img src="./pictures/num2.png" referrerpolicy="no-referrer" alt="repo 만들기#1"></p><p><span>hello_ariel repository가 생성되었습니다. 이제 최초로 commit을 수행합니다.</span></p><p><img src="./pictures/num3.png" referrerpolicy="no-referrer" alt="repo 만들기#2"></p><p><span>main branch에 최초 commit이 수행되었습니다.</span></p><p><img src="./pictures/num4.png" referrerpolicy="no-referrer" alt="repo 만들기#3"></p><h3><a name="2-노트북-wsl2-리눅스-clone" class="md-header-anchor"></a><span>2. 노트북 WSL2 리눅스 Clone</span></h3><p><span>github에서 clone하기 위한 https 서비스 주소를 확인합니다.</span></p><p><img src="./pictures/num5.png" referrerpolicy="no-referrer" alt="실습4"></p><p><span>노트북 WSL2 linux로 접속하여 hello_ariel repository를 생성할 디렉토리로 이동하고, git clone을 실행하도록 합니다. git clone을 실행하면 방금 만든 github hello_ariel repository를 그대로 가져옵니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~<span class="cm-def">$ cd</span> ~/git.repo/ariel</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel<span class="cm-def">$ git</span> clone https://github.com/kurzfilm80/hello_ariel.git</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Cloning into <span class="cm-string">'hello_ariel'</span>...</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Username <span class="cm-keyword">for</span> <span class="cm-string">'https://github.com'</span>: kurzfilm80</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Password <span class="cm-keyword">for</span> <span class="cm-string">'https://kurzfilm80@github.com'</span>:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">remote: Enumerating objects: <span class="cm-number">4</span>, <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">remote: Counting objects: <span class="cm-number">100</span>% (4/4), <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">remote: Compressing objects: <span class="cm-number">100</span>% (3/3), <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">remote: Total <span class="cm-number">4</span> (delta <span class="cm-number">0</span>), reused <span class="cm-number">0</span> (delta <span class="cm-number">0</span>), pack-reused <span class="cm-number">0</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Unpacking objects: <span class="cm-number">100</span>% (4/4), <span class="cm-number">910</span> bytes | <span class="cm-number">910</span>.00 KiB/s, <span class="cm-keyword">done</span>.</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 253px;"></div><div class="CodeMirror-gutters" style="display: none; height: 253px;"></div></div></div></pre><p><span>github에서 만들어둔 README.md와 .gitignore 파일을 노트북 WSL2 linux에서 확인할 수 있습니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel<span class="cm-def">$ cd</span> hello_ariel/</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ ls</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">README.md</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ ls</span> <span class="cm-attribute">-al</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">total <span class="cm-number">20</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxr-xr-x <span class="cm-number">3</span> kurzfilm kurzfilm <span class="cm-number">4096</span> Jan <span class="cm-number">21</span> <span class="cm-number">17</span>:49 .</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxr-xr-x <span class="cm-number">7</span> kurzfilm kurzfilm <span class="cm-number">4096</span> Jan <span class="cm-number">21</span> <span class="cm-number">17</span>:49 ..</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxr-xr-x <span class="cm-number">8</span> kurzfilm kurzfilm <span class="cm-number">4096</span> Jan <span class="cm-number">21</span> <span class="cm-number">17</span>:49 .git</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-attribute">-rw-r--r--</span> <span class="cm-number">1</span> kurzfilm kurzfilm &nbsp;<span class="cm-number">430</span> Jan <span class="cm-number">21</span> <span class="cm-number">17</span>:49 .gitignore</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-attribute">-rw-r--r--</span> <span class="cm-number">1</span> kurzfilm kurzfilm &nbsp; <span class="cm-number">13</span> Jan <span class="cm-number">21</span> <span class="cm-number">17</span>:49 README.md</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 230px;"></div><div class="CodeMirror-gutters" style="display: none; height: 230px;"></div></div></div></pre><h3><a name="3-소스빌드-서버로-push" class="md-header-anchor"></a><span>3. 소스&amp;빌드 서버로 push</span></h3><p><span>소스&amp;빌드 서버에서 사용할 디렉토리를 생성하고. git init . 수행하여 이 디렉토리를 git repository로 만듭니다.</span></p><ul><li><span>소스&amp;빌드 서버</span></li></ul><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~ ] <span class="cm-builtin">cd</span> ~/tmp</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp ] <span class="cm-builtin">mkdir</span> hello_ariel</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp ] <span class="cm-builtin">cd</span> hello_ariel</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">git</span> init .</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Initialized empty Git repository <span class="cm-keyword">in</span> /home/hsspkg/tmp/hello_ariel/.git/</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">ls</span> <span class="cm-attribute">-al</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">total <span class="cm-number">12</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxrwxr-x &nbsp;<span class="cm-number">3</span> hsspkg hsspkg <span class="cm-number">4096</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:36 .</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxrwxr-x <span class="cm-number">14</span> hsspkg hsspkg <span class="cm-number">4096</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:35 ..</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxrwxr-x &nbsp;<span class="cm-number">7</span> hsspkg hsspkg <span class="cm-number">4096</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:36 .git</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 230px;"></div><div class="CodeMirror-gutters" style="display: none; height: 230px;"></div></div></div></pre><ul><li><span>WSL2 리눅스 서버</span></li></ul><p><span>WSL2 리눅스 서버에서 remote repository를 추가해 줍니다. 아래 git remote add 명령어가 remote repository를 추가하는 명령어입니다. git remote -v로 현재 원격 repository 목록을 확인할 수 있습니다. 현재에는 github에 해당하는 origin repository와 방금 추가한 ariel repository를 확인할 수 있습니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ git</span> remote add ariel hsspkg@192.168.70.236:~/tm</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">p/hello_ariel</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ git</span> remote <span class="cm-attribute">-v</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">ariel &nbsp; hsspkg@192.168.70.236:~/tmp/hello_ariel (fetch)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">ariel &nbsp; hsspkg@192.168.70.236:~/tmp/hello_ariel (push)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">origin  https://github.com/kurzfilm80/hello_ariel.git (fetch)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">origin  https://github.com/kurzfilm80/hello_ariel.git (push)</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 184px;"></div><div class="CodeMirror-gutters" style="display: none; height: 184px;"></div></div></div></pre><p><span>이제 아무것도 없는 소스&amp;빌드 서버의 repository로 WSL2 리눅스 repository 내용을 push합니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ git</span> push ariel</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">hsspkg@192.168.70.236<span class="cm-string">'s password:</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Permission denied, please try again.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">hsspkg@192.168.70.236<span class="cm-string">'s password:</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Enumerating objects: <span class="cm-number">4</span>, <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Counting objects: <span class="cm-number">100</span>% (4/4), <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Delta compression using up to <span class="cm-number">8</span> threads</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Compressing objects: <span class="cm-number">100</span>% (3/3), <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Writing objects: <span class="cm-number">100</span>% (4/4), <span class="cm-number">930</span> bytes | <span class="cm-number">465</span>.00 KiB/s, <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Total <span class="cm-number">4</span> (delta <span class="cm-number">0</span>), reused <span class="cm-number">0</span> (delta <span class="cm-number">0</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">To <span class="cm-number">192</span>.168.70.236:~/tmp/hello_ariel</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> * [new branch] &nbsp; &nbsp;  main <span class="cm-attribute">-</span>&gt; main</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 276px;"></div><div class="CodeMirror-gutters" style="display: none; height: 276px;"></div></div></div></pre><ul><li><span>소스&amp;빌드 서버</span></li></ul><p><span>소스&amp;빌드 서버 디렉토리르 확인하면 아무런 변화가 없을 수 있습니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">ls</span> <span class="cm-attribute">-al</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">total <span class="cm-number">12</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxrwxr-x &nbsp;<span class="cm-number">3</span> hsspkg hsspkg <span class="cm-number">4096</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:36 .</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxrwxr-x <span class="cm-number">14</span> hsspkg hsspkg <span class="cm-number">4096</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:35 ..</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxrwxr-x &nbsp;<span class="cm-number">8</span> hsspkg hsspkg <span class="cm-number">4096</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:40 .git</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 115px;"></div><div class="CodeMirror-gutters" style="display: none; height: 115px;"></div></div></div></pre><p><span>이유는 main branch로 checkout(입장)이 되지 않았기 때문입니다. git branch 명령어는 현재 branch 목록을 보여줍니다. 현재 checkout된 branch 앞에는 &#39;*&#39;가 표시가 됩니다. main branch로 checkout을 수행하면, github에서 만들었던 파일들을 확인할 수 있습니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">git</span> branch</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  main</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">git</span> checkout main</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Switched to branch <span class="cm-string">'main'</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">git</span> branch</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">* main</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">ls</span> <span class="cm-attribute">-al</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">total <span class="cm-number">20</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxrwxr-x &nbsp;<span class="cm-number">3</span> hsspkg hsspkg <span class="cm-number">4096</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:41 .</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxrwxr-x <span class="cm-number">14</span> hsspkg hsspkg <span class="cm-number">4096</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:35 ..</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxrwxr-x &nbsp;<span class="cm-number">8</span> hsspkg hsspkg <span class="cm-number">4096</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:41 .git</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-attribute">-rw-rw-r--</span> &nbsp;<span class="cm-number">1</span> hsspkg hsspkg &nbsp;<span class="cm-number">430</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:41 .gitignore</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-attribute">-rw-rw-r--</span> &nbsp;<span class="cm-number">1</span> hsspkg hsspkg &nbsp; <span class="cm-number">13</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:41 README.md</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 299px;"></div><div class="CodeMirror-gutters" style="display: none; height: 299px;"></div></div></div></pre><h3><a name="4-개발-빌드테스트" class="md-header-anchor"></a><span>4. 개발, 빌드&amp;테스트</span></h3><p><span>vscode를 실행하고 [file]-[open folder]에서 WLS2 리눅스의 hello_ariel 폴더를 open합니다.</span></p><p><img src="./pictures/vscode1.png" referrerpolicy="no-referrer" alt="hello_ariel 폴더 열기"></p><p><span>탐색기에서 기존 파일 .gitignore, README.md를 확인할 수 있습니다. main.c 파일을 추가해 줍니다.</span></p><p><img src="./pictures/vscode2.png" referrerpolicy="no-referrer" alt="main.c 파일 추가"></p><p><span>main.c 파일을 열고 hello ariel 출력 코드를 입력합니다. 빌드하고 정상적으로 출력이 되는지 확인을 합니다. 실제 개발 시에는 컴파일을 WSL2 리눅스에서 수행하기 위해서는 많은 추가 설정이 필요할 겁니다.</span></p><p><img src="./pictures/vscode3.png" referrerpolicy="no-referrer" alt="main.c 개발 빌드 출력"></p><p><span>이제 현재 상태로 commit을 수행합니다. source control에서 comment를 입력하고 commit 버튼을 클릭하면 모든 변경사항이 commit 됩니다. vscode에서는 git 명령어들을 클릭만으로 편리하게 수행하고, 현재 변경된 파일 리스트, commit 후 원격 repository로 push가 수행되었는지 여부도 확인할 수 있습니다.</span></p><p><img src="./pictures/vscode4.png" referrerpolicy="no-referrer" alt="commit 수행"></p><p><span>repository는 bare와 non-bare(working/development)로 구분할 수 있습니다. bare는 저장 전용 repository(github)이고, non-bare는 소스를 수정하고 작업을 하는 working/development repository라고 생각하시면 됩니다. 현재 만들어진 repository는 다음과 같습니다.</span></p><figure><table><thead><tr><th><span>구분</span></th><th><span>repository</span></th><th><span>비고</span></th></tr></thead><tbody><tr><td><span>bare</span></td><td><span>github의 hello_ariel</span></td><td>&nbsp;</td></tr><tr><td><span>non-bare(working/development)</span></td><td><span>WSL2 리눅스의 hello_ariel,</span><br><br><span>소스&amp;빌드 리눅스의 hello_ariel</span></td><td>&nbsp;</td></tr></tbody></table></figure><p><span>WSL2 리눅스에서 변경한 내용을 소스&amp;빌드 서버로 push를 해야 하는데, non-bare 간의 push가 default로는 허용되지 않기 때문에, 이를 무시하는 옵션을 소스&amp;빌드 서버의 .git/config에 아래와 같이 설정해야 합니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">vi</span> .git/config</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">[core]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span>repositoryformatversion <span class="cm-operator">=</span> <span class="cm-number">0</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span>filemode <span class="cm-operator">=</span> <span class="cm-atom">true</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span>bare <span class="cm-operator">=</span> <span class="cm-atom">false</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span>logallrefupdates <span class="cm-operator">=</span> <span class="cm-atom">true</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">[receive]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  denyCurrentBranch <span class="cm-operator">=</span> ignore</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 184px;"></div><div class="CodeMirror-gutters" style="display: none; height: 184px;"></div></div></div></pre><p><span>WSL2 리눅스에서 소스&amp;빌드 서버 ariel repository의 main branch로 push 수행합니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ git</span> push ariel main</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">hsspkg@192.168.70.236<span class="cm-string">'s password: </span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Enumerating objects: <span class="cm-number">4</span>, <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Counting objects: <span class="cm-number">100</span>% (4/4), <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Delta compression using up to <span class="cm-number">8</span> threads</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Compressing objects: <span class="cm-number">100</span>% (3/3), <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Writing objects: <span class="cm-number">100</span>% (3/3), <span class="cm-number">375</span> bytes | <span class="cm-number">375</span>.00 KiB/s, <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Total <span class="cm-number">3</span> (delta <span class="cm-number">0</span>), reused <span class="cm-number">0</span> (delta <span class="cm-number">0</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">To <span class="cm-number">192</span>.168.70.236:~/tmp/hello_ariel</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; 8b14569..2921ab0  main <span class="cm-attribute">-</span>&gt; main</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 230px;"></div><div class="CodeMirror-gutters" style="display: none; height: 230px;"></div></div></div></pre><p><span>소스&amp;빌드 서버에서 main.c 추가를 확인합니다. 추가되지 않았다면, git reset --hard 명령어를 실행해서 현재 작업 헤드가 push된 마지막 commit 상태를 가르키도록 해야 합니다. git에는 working directory라는 것이 있는데, 현재 작업이 진행 중이 내용들입니다. 소스&amp;빌드 서버에 입장에서는 다른 서버로부터 push 받은 마지막 commit 내용은 현재 작업 중인 내용과 별개입니다. 누군가 내 repository로 push를 했다고 해서 제가 작업하던 내용이 사라지면 안 되기 때문입니다. 이해하기 어려운 부분이지만 사용하다보면 자연스레 어느 정도 이해되는 것 같습니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash" style="break-inside: unset;"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">ls</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">README.md</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">git</span> reset <span class="cm-attribute">--hard</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">HEAD is now at 2921ab0 dev hello ariel</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">ls</span> <span class="cm-attribute">-al</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">total <span class="cm-number">24</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxrwxr-x &nbsp;<span class="cm-number">3</span> hsspkg hsspkg <span class="cm-number">4096</span> Jan <span class="cm-number">22</span> <span class="cm-number">11</span>:24 .</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxrwxr-x <span class="cm-number">14</span> hsspkg hsspkg <span class="cm-number">4096</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:35 ..</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">drwxrwxr-x &nbsp;<span class="cm-number">8</span> hsspkg hsspkg <span class="cm-number">4096</span> Jan <span class="cm-number">22</span> <span class="cm-number">11</span>:24 .git</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-attribute">-rw-rw-r--</span> &nbsp;<span class="cm-number">1</span> hsspkg hsspkg &nbsp;<span class="cm-number">430</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:41 .gitignore</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-attribute">-rw-rw-r--</span> &nbsp;<span class="cm-number">1</span> hsspkg hsspkg &nbsp; <span class="cm-number">13</span> Jan <span class="cm-number">22</span> <span class="cm-number">09</span>:41 README.md</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-attribute">-rw-rw-r--</span> &nbsp;<span class="cm-number">1</span> hsspkg hsspkg &nbsp; <span class="cm-number">67</span> Jan <span class="cm-number">22</span> <span class="cm-number">11</span>:24 main.c</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">cc</span> main.c</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] a.out</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 322px;"></div><div class="CodeMirror-gutters" style="display: none; height: 322px;"></div></div></div></pre><h3><a name="5-보완사항1-개발-빌드--테스트" class="md-header-anchor"></a><span>5. 보완사항#1 개발, 빌드 &amp; 테스트</span></h3><ul><li><span>소스&amp;빌드 서버</span></li></ul><p><span>소스&amp;빌드 서버에서 보완사항#1을 개발하고 결과를 확인합니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><span><span>​</span>x</span></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">vi</span> main.c</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">#include &lt;stdio.h&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">void main(void)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  printf(<span class="cm-string">"hello ariel.\n"</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  printf(<span class="cm-string">"nice to meet you.\n"</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">cc</span> main.c</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] a.out</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">hello ariel.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">nice to meet you.</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 276px;"></div><div class="CodeMirror-gutters" style="display: none; height: 276px;"></div></div></div></pre><p><span>git status로 변경된 내용을 확인하고, git commit을 수행합니다. commit 시에는 -a는 all을 의미하고, -m은 comment를 남기는 옵션입니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash" style="break-inside: unset;"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">git</span> status</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment"># On branch main</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment"># Changed but not updated:</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment"># &nbsp; (use "git add &lt;file&gt;..." to update what will be committed)</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment"># &nbsp; (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">#</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" class="cm-tab-wrap-hack" style="padding-right: 0.1px;"><span class="cm-comment">#<span class="cm-tab" role="presentation" cm-text="	">   </span>modified: &nbsp; main.c</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">#</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">no changes added to commit (use <span class="cm-string">"git add"</span> and/or <span class="cm-string">"git commit -a"</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">git</span> commit <span class="cm-attribute">-am</span> <span class="cm-string">"dev nice hello"</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">[main d5a5b7e] dev nice hello</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> Committer: hsspkg &lt;hsspkg@rcsga.(none)&gt;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Your name and email address were configured automatically based</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">on your username and hostname. Please check that they are accurate.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">You can suppress this message by setting them explicitly:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-builtin">git</span> config <span class="cm-attribute">--global</span> user.name <span class="cm-string">"Your Name"</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-builtin">git</span> config <span class="cm-attribute">--global</span> user.email you@example.com</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">If the identity used <span class="cm-keyword">for</span> this commit is wrong, you can fix it with:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-builtin">git</span> commit <span class="cm-attribute">--amend</span> <span class="cm-attribute">--author</span><span class="cm-operator">=</span><span class="cm-string">'Your Name &lt;you@example.com&gt;'</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> <span class="cm-number">1</span> files changed, <span class="cm-number">3</span> insertions(<span class="cm-operator">+</span>), <span class="cm-number">2</span> deletions(-)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">rcsga [ hsspkg ~/tmp/hello_ariel ] <span class="cm-builtin">git</span> status</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment"># On branch main</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">nothing to commit (working directory clean)</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 621px;"></div><div class="CodeMirror-gutters" style="display: none; height: 621px;"></div></div></div></pre><ul><li><span>WSL2 리눅스 서버</span></li></ul><p><span>git pull 명령어로 WSL2 리눅스에서 소스&amp;빌드 서버의 보완사항#1 commit 내용을 가져옵니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash" style="break-inside: unset;"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ git</span> pull ariel main</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">hsspkg@192.168.70.236<span class="cm-string">'s password: </span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Permission denied, please try again.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">hsspkg@192.168.70.236<span class="cm-string">'s password: </span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">remote: Counting objects: <span class="cm-number">5</span>, <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">remote: Compressing objects: <span class="cm-number">100</span>% (3/3), <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">remote: Total <span class="cm-number">3</span> (delta <span class="cm-number">1</span>), reused <span class="cm-number">0</span> (delta <span class="cm-number">0</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Unpacking objects: <span class="cm-number">100</span>% (3/3), <span class="cm-number">314</span> bytes | <span class="cm-number">157</span>.00 KiB/s, <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">From <span class="cm-number">192</span>.168.70.236:~/tmp/hello_ariel</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> * branch &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  main &nbsp; &nbsp; &nbsp; <span class="cm-attribute">-</span>&gt; FETCH_HEAD</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; 2921ab0..d5a5b7e  main &nbsp; &nbsp; &nbsp; <span class="cm-attribute">-</span>&gt; ariel/main</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Updating 2921ab0..d5a5b7e</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Fast-forward</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> main.c | <span class="cm-number">5</span> <span class="cm-operator">+++</span><span class="cm-attribute">--</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> <span class="cm-number">1</span> file changed, <span class="cm-number">3</span> insertions(<span class="cm-operator">+</span>), <span class="cm-number">2</span> deletions(-)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ git</span> status</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">On branch main</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Your branch is ahead of <span class="cm-string">'origin/main'</span> by <span class="cm-number">1</span> commit.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  (use <span class="cm-string">"git push"</span> to publish your local commits)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">nothing to commit, working tree clean</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ ls</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">README.md  a.out  main.c</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ cat</span> main.c</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">#include &lt;stdio.h&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">void main(void)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  printf(<span class="cm-string">"hello ariel.\n"</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  printf(<span class="cm-string">"nice to meet you.\n"</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ cc</span> main.c </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ </span>./a.out</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">hello ariel.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">nice to meet you.</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 805px;"></div><div class="CodeMirror-gutters" style="display: none; height: 805px;"></div></div></div></pre><p><span>개발과 보완작업#1을 마쳤으니 오늘 작업이 완료된 셈입니다. 이제 Github로 모든 내용들을 반영합니다. git push 명령어를 사용하여 Github로 반영을 합니다. 이 때 push할 대상은 Github의 main branch이기 때문에, origin main으로 push를 합니다.</span></p><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang="bash"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="bash"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">kurzfilm@DESKTOP-6LCQ1SN:~/git.repo/ariel/hello_ariel<span class="cm-def">$ git</span> push origin main</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Enumerating objects: <span class="cm-number">5</span>, <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Counting objects: <span class="cm-number">100</span>% (5/5), <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Delta compression using up to <span class="cm-number">8</span> threads</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Compressing objects: <span class="cm-number">100</span>% (3/3), <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Writing objects: <span class="cm-number">100</span>% (3/3), <span class="cm-number">334</span> bytes | <span class="cm-number">334</span>.00 KiB/s, <span class="cm-keyword">done</span>.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Total <span class="cm-number">3</span> (delta <span class="cm-number">1</span>), reused <span class="cm-number">0</span> (delta <span class="cm-number">0</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">remote: Resolving deltas: <span class="cm-number">100</span>% (1/1), completed with <span class="cm-number">1</span> local object.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">To https://github.com/kurzfilm80/hello_ariel.git</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; 2921ab0..d5a5b7e  main <span class="cm-attribute">-</span>&gt; main</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 230px;"></div><div class="CodeMirror-gutters" style="display: none; height: 230px;"></div></div></div></pre><ul><li><span>Github</span></li></ul><p><span>Github로 돌아가서 개발 및 보완사항#1이 반영되었는지 확인한다.</span></p><p><img src="./pictures/vscode5.png" referrerpolicy="no-referrer" alt="github 최종 확인"></p><h1><a name="나가는-말" class="md-header-anchor"></a><span>나가는 말</span></h1><p><span>처음에는 많은 분들이 git에 매력을 느끼고 많이 사용했으면 하는 마음에서 이 글을 시작했습니다. git이라는 것이 혼자만 사용할 때도 상당히 유용하지만, 모두 함께 사용할 때 그 효용이 배가 된다고 생각하기 때문입니다. 그래서 git의 세 가지 키워드에 협업이 포함되어 있는 것이죠.</span></p><p><span>git의 매력을 충분히 어필할 수 있었는지는 모르겠습니다. 생각과 느낌을 전달하는 것이 새삼 어렵다고 느껴집니다. 사실을 전달하는 일만 해도 많은 오해가 생겨나니, 새삼이랄 것도 없겠네요.</span></p><p><span>긴 글 읽어주셔서 감사합니다.</span></p></div>
+</body>
+</html>
